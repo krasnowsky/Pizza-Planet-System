@@ -6,13 +6,18 @@ public class pizzaPlanet {
     private final Scanner scanner = new Scanner(System.in);
     private final menu menu = new menu();
     private final coupons coupons = new coupons();
+    private boolean isCorrect = true;
 
     private void navigation(int choice){
         switch(choice){
             case 1:
             {
-                menu.drawMenu();
-                menu.getOrder();
+                do {
+                    menu.drawMenu();
+                    menu.getOrder();
+                    isCorrect = menu.checkOrder();
+                } while(!isCorrect);
+
                 break;
             }
             case 2:

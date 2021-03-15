@@ -18,8 +18,12 @@ public class menu{
         }
         System.out.println(menu.length + 1 + ". Go back");
         System.out.println("Choice: ");
+    }
 
+    public void getOrder() {
         pizzaChoice = scan.nextInt();
+
+        if(pizzaChoice == menu.length + 1)
 
         System.out.println("------PICK YOUR DOUGH------");
         for(int i = 0; i < doughType.length; i++) {
@@ -36,10 +40,21 @@ public class menu{
         System.out.println("Choice: ");
 
         sauceChoice = scan.nextInt();
+        System.out.println("Final order: " + menu[pizzaChoice-1] + " on " + doughType[doughChoice-1].toLowerCase() + " dough with " + sauceType[sauceChoice-1].toLowerCase());
     }
 
-    public void getOrder() {
-        System.out.println("Final order: " + menu[pizzaChoice-1] + " on " + doughType[doughChoice-1].toLowerCase() + " dough with " + sauceType[sauceChoice-1].toLowerCase());
+    public boolean checkOrder() {
+        System.out.println("Is you order correct? [Y/N]");
+        String correct = scan.next();
+
+        if(correct.equals("y")){
+            System.out.println("Thank you for your order!");
+            return true;
+        }
+        else {
+            System.out.println("Please place Your order once more :)");
+            return false;
+        }
     }
 
 }
