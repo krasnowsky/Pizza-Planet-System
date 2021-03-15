@@ -1,15 +1,19 @@
 package pizzaPlanet;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class menu{
-    private String[] menu = new String[]{"Margarita", "Salami", "Capriciosa", "Hawai"};
-    private String[] doughType = new String[]{"Thick", "Thin"};
-    private String[] sauceType = new String[]{"Garlic", "Ketchup"};
+    private final String[] menu = new String[]{"Margarita", "Salami", "Capriciosa", "Hawai"};
+    private final String[] doughType = new String[]{"Thick", "Thin"};
+    private final String[] sauceType = new String[]{"Garlic", "Ketchup"};
     private final Scanner scan = new Scanner(System.in);
-    private int pizzaChoice = 0;
-    private int doughChoice = 0;
-    private int sauceChoice = 0;
+    private String order;
+    private int orderId = 1;
+    StringBuilder strBuilder = new StringBuilder();
 
     public void drawMenu() {
         System.out.println("------AVAILABLE PRODUCTS------");
@@ -20,10 +24,10 @@ public class menu{
         System.out.println("Choice: ");
     }
 
-    public void getOrder() {
-        pizzaChoice = scan.nextInt();
+    public boolean getOrder() {
+        int pizzaChoice = scan.nextInt();
 
-        if(pizzaChoice == menu.length + 1)
+        if(pizzaChoice == menu.length + 1) return true;
 
         System.out.println("------PICK YOUR DOUGH------");
         for(int i = 0; i < doughType.length; i++) {
@@ -31,7 +35,7 @@ public class menu{
         }
         System.out.println("Choice: ");
 
-        doughChoice = scan.nextInt();
+        int doughChoice = scan.nextInt();
 
         System.out.println("------PICK YOUR SAUCE------");
         for(int i = 0; i < sauceType.length; i++) {
@@ -39,8 +43,10 @@ public class menu{
         }
         System.out.println("Choice: ");
 
-        sauceChoice = scan.nextInt();
-        System.out.println("Final order: " + menu[pizzaChoice-1] + " on " + doughType[doughChoice-1].toLowerCase() + " dough with " + sauceType[sauceChoice-1].toLowerCase());
+        int sauceChoice = scan.nextInt();
+        System.out.println("Final order: " + menu[pizzaChoice -1] + " on " + doughType[doughChoice -1].toLowerCase() + " dough with " + sauceType[sauceChoice -1].toLowerCase());
+        order = menu[pizzaChoice -1] + " on " + doughType[doughChoice -1].toLowerCase() + " dough with " + sauceType[sauceChoice -1].toLowerCase();
+        return false;
     }
 
     public boolean checkOrder() {
@@ -49,11 +55,24 @@ public class menu{
 
         if(correct.equals("y")){
             System.out.println("Thank you for your order!");
+
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+            Date date = new Date();
+            strBuilder.append("#" + orderId + " " + order + " [" + formatter.format(date) + "]\n");
             return true;
         }
         else {
             System.out.println("Please place Your order once more :)");
             return false;
+        }
+    }
+
+    public void saveOrder() {
+        try(PrintWriter out = new PrintWriter("orders.txt")) {
+            out.println(strBuilder.toString());
+            orderId++;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

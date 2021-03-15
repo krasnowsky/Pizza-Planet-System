@@ -6,23 +6,35 @@ public class pizzaPlanet {
     private final Scanner scanner = new Scanner(System.in);
     private final menu menu = new menu();
     private final coupons coupons = new coupons();
-    private boolean isCorrect = true;
+    private boolean wantToQuit = false;
+
+    public boolean getWantToQuit() {
+        return wantToQuit;
+    }
+
 
     private void navigation(int choice){
         switch(choice){
             case 1:
             {
+                boolean isCorrect;
                 do {
                     menu.drawMenu();
-                    menu.getOrder();
+                    if(menu.getOrder()) break;
                     isCorrect = menu.checkOrder();
+                    if(isCorrect) menu.saveOrder();
                 } while(!isCorrect);
-
                 break;
             }
             case 2:
             {
-                coupons.drawCoupons();
+                boolean doneTakingCoupons;
+                do {
+                    coupons.drawCoupons();
+                    if(coupons.pickCoupons()) break;
+                    doneTakingCoupons = coupons.couponsReady();
+                } while(doneTakingCoupons);
+                coupons.saveCoupons();
                 break;
             }
             case 3:
@@ -37,7 +49,8 @@ public class pizzaPlanet {
             }
             case 5:
             {
-                //leaving
+                System.out.println("See you!");
+                wantToQuit = true;
                 break;
             }
             default:
@@ -50,10 +63,10 @@ public class pizzaPlanet {
     public void welcome() {
         System.out.println("------WELCOME IN PIZZA PLANET------");
         System.out.println("1. Menu");
-        System.out.println("2. Buy coupons");
+        System.out.println("2. Pick coupons");
         System.out.println("3. Apply for a work");
-        System.out.println("4. Contact");
-        System.out.println("5. Leave\n");
+        System.out.println("4. Contact us");
+        System.out.println("5. Quit\n");
         System.out.println("Choice: ");
         int choice = scanner.nextInt();
         //clear screen here
