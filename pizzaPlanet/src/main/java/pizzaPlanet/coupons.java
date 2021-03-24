@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class coupons {
     private final String[] coupons = new String[]{"Small Salami - 10$", "Big Hawai - 15$", "Coca-Cola - 3$", "Chips - 7$", "Big Meal Pizza + Coca-Cola - 20$"};
     private final boolean[] isTaken = new boolean[coupons.length];
-    private int couponChoice;
     Scanner scan = new Scanner(System.in);
     StringBuilder strBuilder = new StringBuilder();
 
@@ -22,7 +21,7 @@ public class coupons {
 
     public boolean pickCoupons() {
         System.out.println("Choice: ");
-        couponChoice = scan.nextInt();
+        int couponChoice = scan.nextInt();
         if(couponChoice == coupons.length + 1) return true;
         if(isTaken[couponChoice - 1]) {
             System.out.println("Coupon number " + couponChoice + " was already picked by you.");
